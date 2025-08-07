@@ -15,6 +15,8 @@ export default async function status(request, response) {
     migrationsTable: "pgmigrations",
   }
 
+  const aceptedMethods = ["GET", "POST"];
+
   if (request.method === "GET") {
     const pendingMigrations = await migrationRunner(defaultMigrationsOptions)
     await dbClient.end();
@@ -34,6 +36,14 @@ export default async function status(request, response) {
     }
 
     return response.status(200).json(migratedMigrations);
+  }
+
+  if (!aceptedMethods.includes(request.method)) {
+    await dbClient.end();
+    return response.status(405).json({
+      error: "Metodo não aceito",
+      methods: aceptedMethods,
+    });
   }
 
   return response.status(405).end();
