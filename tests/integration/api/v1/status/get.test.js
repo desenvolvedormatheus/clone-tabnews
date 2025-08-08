@@ -1,3 +1,9 @@
+import orcherstrator from "tests/orcherstrator.js";
+
+beforeAll(async () => {
+  await orcherstrator.waitForAllServices();
+});
+
 test("Get deve retornar status 200", async () => {
   const response = await getResponseApi(false, 1);
   expect(response.status).toBe(200);

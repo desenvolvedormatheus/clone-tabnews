@@ -1,10 +1,10 @@
 import database from "infra/database.js";
+import orcherstrator from "tests/orcherstrator.js";
 
-beforeAll(cleanDatabase);
-
-async function cleanDatabase() {
+beforeAll(async () => {
+  await orcherstrator.waitForAllServices();
   await database.query("drop schema public cascade; create schema public;");
-}
+})
 
 test("Post deve retornar status 200", async () => {
   const response = await getResponseApi(false, 1, "migrations");
